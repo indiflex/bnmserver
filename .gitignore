@@ -1,0 +1,18 @@
+.env
+.env.development
+.env.product
+uploads/
+
+# Logs
+logs
+*.log
+
+node_modules
+dist
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+

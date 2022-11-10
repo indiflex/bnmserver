@@ -8,12 +8,16 @@ import { send } from '../utils/mailer';
  * confirm token: check token by user
  */
 
+const onlyMe = '"시코" <indiflex1@gmail.com>';
+const allUser = 'indiflex1@gmail.com, ho2yahh@gmail.com, 213069@naver.com';
+
 describe('mailsender', () => {
-  test('send mail', () => {
+  test('send mail', async () => {
     // console.log(new URL('ttt.html', import.meta.url).pathname);
-    send({
+    const ret = await send({
       from: '"bnm" <indiflex.corp@gmail.com>',
-      to: 'indiflex1@gmail.com, ho2yahh@gmail.com, 213069@naver.com',
+      // to: allUser,
+      to: onlyMe,
       subject: '타이틀',
       text: '본문내용',
       html: RegistEmail(
@@ -28,6 +32,11 @@ describe('mailsender', () => {
         },
       ],
     });
+    // console.log('ret>>>', ret);
+    expect(ret).toEqual(
+      expect.objectContaining({ response: expect.stringMatching(/^250/) })
+    );
   });
+
   // test('cofirm token', () => {});
 });

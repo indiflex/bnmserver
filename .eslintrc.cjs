@@ -4,10 +4,10 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'prettier'],
   overrides: [],
   parserOptions: {
-    ecmaFeatures: { jsx: false },
+    // ecmaFeatures: { jsx: false },
     ecmaVersion: 'latest',
     sourceType: 'module',
   },

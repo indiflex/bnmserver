@@ -11,7 +11,7 @@ export const send = async ({
   auth,
 }) => {
   const trans = createTransport(auth ? { ...MailInfo, auth } : MailInfo);
-  console.log('**********>>', attachments);
+  // console.log('**********>>', attachments);
   try {
     const result = await trans.sendMail({
       from,
@@ -21,8 +21,12 @@ export const send = async ({
       html,
       attachments,
     });
-    console.log(result);
+    // console.log(result);
+
+    return result;
   } catch (error) {
     throw error;
+  } finally {
+    trans.close();
   }
 };

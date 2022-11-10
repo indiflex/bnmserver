@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import request from 'supertest';
 import { server } from '../bnm.js';
 

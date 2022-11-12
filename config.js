@@ -6,7 +6,12 @@
 import { config } from 'dotenv';
 config();
 
-export const { PORT, GOOGLE_APP_USER, GOOGLE_APP_PASS } = process.env;
+export const {
+  PORT,
+  GOOGLE_APP_USER,
+  GOOGLE_APP_PASS,
+  EKEY: DefaultSalt,
+} = process.env;
 
 export const DbInfo = {};
 

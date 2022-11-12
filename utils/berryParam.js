@@ -1,4 +1,5 @@
-import { extendJson, getValue } from './utils';
+import { getValue } from './utils.js';
+import { encrypt } from './encryptUtils.js';
 
 // select * from User where name =: name;
 // params['user'] = { id: 1 };
@@ -7,9 +8,6 @@ import { extendJson, getValue } from './utils';
 // const REG_PARAM = /(:|@)([A-Za-z]+)([0-9.a-zA-Z_\\-]*)/g;
 const REG_PARAM = /({)([@A-Za-z]+)([0-9.a-zA-Z_\\-]*)(})/g;
 const REG_REPLACER = /^{|}$/g;
-
-// TODO apply utils
-const encrypt = (str) => str;
 
 /**
  * berryParam(sql, req, otherParam)
@@ -21,6 +19,7 @@ const encrypt = (str) => str;
  *  - {k}
  *  - {@arr_k} : value.split('.')
  *  - {@enc_k} : encrypt(value)
+ *  - {@pwd_k} : pbkdf2(value)
  * 
  * usage:
  *  const { query, queryParams } = berryParam(sql, req);
@@ -32,14 +31,16 @@ const encrypt = (str) => str;
 
 export const berryParam = (sql, params) => {
   try {
-    // console.log(params);
+    console.log(params);
     const paramKeys = sql.match(REG_PARAM);
-    // console.log('***************', paramKeys);
+    console.log('***************', paramKeys);
     const query = sql.replace(REG_PARAM, '?');
+    // console.log('***************', query);
     const queryParams = paramKeys.map((pk) => {
       const k = pk.replace(REG_REPLACER, ''); // {} 제거
       if (k.startsWith('@')) {
         const val = getValue(params, k.substring(5));
+        console.log('🚀 ~ val', val, k.substring(5));
         switch (k.substring(0, 5)) {
           case '@arr_':
             return val.split(',');
@@ -52,6 +53,7 @@ export const berryParam = (sql, params) => {
     });
     return { query, queryParams };
   } catch (error) {
+    console.error('EEEEEEE>>', error);
     return { error };
   }
 };

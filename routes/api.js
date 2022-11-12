@@ -1,3 +1,5 @@
+import { makeParam } from '../utils/httpUtils.js';
+
 const create = (req, res, apiParams) => {};
 const read = (req, res, params) => {};
 const update = (req, res) => {};
@@ -25,10 +27,14 @@ export const api = (req, res) => {
 // @ToDo: move to utils/httputils.js
 // param & query sample
 export const apiParams = (req, res) => {
-  console.log('params>>', req.params);
-  console.log('cookies>>', req.cookies);
-  const { appid, version, schemas, idcmd } = req.params;
-  res.json({ appid, version, schemas, idcmd, query: req.query });
+  // console.log('params>>', req.params);
+  // console.log('cookies>>', req.cookies);
+  // const { appid, version, schemas, idcmd } = req.params;
+  // res.json({ appid, version, schemas, idcmd, query: req.query });
+  // sele... where id=:params.id
+  const params = makeParam(req);
+  console.log('🚀 ~', params);
+  res.json(params);
 };
 
 export const hello = (req, res) => {

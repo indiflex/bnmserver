@@ -8,18 +8,35 @@ import { berryParam } from '../utils/berryParam';
 const request = {
   params: { appid: 'bnmwww', id: 1 },
   // query: { searchStr: 'srcStr' },
-  body: { user: { id: 2, name: 'Hong' } },
+  body: { user: { id: 2, name: 'Hong', roles: '1,2,3', ssn: '010102' } },
 };
 
-describe('berryParam', () => {
+describe.skip('berryParam - old', () => {
   test('simple sql', () => {
-    const sql = 'select * from Table where id=:id and name = :user.name';
-    const results = {
-      query: 'select * from Table where id=? and name = ?',
-      queryParams: [1, 'Hong'],
-    };
-    // const { query, queryParams, error, params } = berryParam(sql, request);
+    const sql = `select *, 'ab:cd' abcd, :appid as app from Table where id=:id and name = :user.name and xx = 'abc:ef'`;
+    //`const { query, queryParams, error, params } = berryParam(sql, request);
     const bp = berryParam(sql, request);
-    expect(bp).toEqual(results);
+    expect(bp).toEqual({
+      query: `select *, 'ab:cd' abcd, ? as app from Table where id=? and name = ? and xx = 'abc:ef'`,
+      queryParams: ['bnmwww', 1, 'Hong'],
+    });
+  });
+});
+
+describe('berryParam - new version', () => {
+  test('simple sql', () => {
+    const sql = `select *, 'ab:cd' abcd, {appid} as app from Table where id={id} and name = {user.name} and xx = 'abc:ef' and role in ({@arr_user.roles}) and ssn = {@enc_user.ssn}`;
+    //`const { query, queryParams, error, params } = berryParam(sql, request);
+    const { query, queryParams } = berryParam(sql, request);
+    expect(query).toBe(
+      `select *, 'ab:cd' abcd, ? as app from Table where id=? and name = ? and xx = 'abc:ef' and role in (?) and ssn = ?`
+    );
+    expect(queryParams).toEqual([
+      'bnmwww',
+      1,
+      'Hong',
+      ['1', '2', '3'],
+      '010102',
+    ]);
   });
 });

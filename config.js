@@ -12,6 +12,7 @@ export const {
   GOOGLE_APP_PASS,
   EKEY: DefaultSalt,
   SECRET,
+  COOKIE_SECRET,
   REDIS_INFO,
 } = process.env;
 

@@ -1,52 +1,15 @@
 import express from 'express';
 
-import bodyParser from 'body-parser';
-import expressSession from 'express-session';
-import { createClient } from 'redis';
-
 import ogs from 'open-graph-scraper';
-import { PORT, RedisInfo, SECRET } from './config.js';
+import { PORT } from './config.js';
 import { hello, api, apiParams } from './routes/api.js';
+import { setSessionAndCookie } from './utils/httpUtils.js';
+import { Redis } from './utils/Redis.js';
 
 const app = express();
+const redis = new Redis();
 
-app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
-app.use(
-  expressSession({
-    resave: false,
-    saveUninitialized: false,
-    secret: SECRET,
-    cookie: {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-  })
-);
-
-const client = createClient(RedisInfo);
-client.connect().then(() => {
-  console.log('getConnect');
-});
-
-app.get('/redis', async (req, res) => {
-  try {
-    client.on('connect', () => console.log('Redis Connected!'));
-    client.on('disconnect', () => console.log('Redis Disconnected!'));
-    client.on('error', (error) => console.log('Redis Error>>', error));
-
-    const k = 'key01';
-    // const v = 'value11';
-    // client.set(k, v);
-    client.get(k, (err, data) => {
-      console.log(err, data);
-      res.json({ k: data });
-    });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // client.disconnect();
-  }
-});
+setSessionAndCookie(app, redis);
 
 app.get('/', hello);
 

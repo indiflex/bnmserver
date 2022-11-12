@@ -14,9 +14,23 @@ export const {
   SECRET,
   COOKIE_SECRET,
   REDIS_INFO,
+  ALLOW_HOSTS,
+  DB_HOST,
+  DB_PASS,
 } = process.env;
 
-export const DbInfo = {};
+export const AllowHosts = ALLOW_HOSTS.split(',');
+
+export const DbInfo = {
+  host: DB_HOST,
+  port: 3306,
+  user: 'sico',
+  password: DB_PASS,
+  database: 'sbdb',
+  waitForConnections: true,
+  connectionLimit: 5,
+  queueLimit: 0,
+};
 
 export const RedisInfo = {
   legacyMode: true,

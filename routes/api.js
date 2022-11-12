@@ -1,4 +1,4 @@
-import { makeParam } from '../utils/httpUtils.js';
+import { makeParams } from '../utils/httpUtils.js';
 
 // const create = (req, res, apiParams) => {};
 // const read = (req, res, params) => {};
@@ -36,7 +36,7 @@ export const apiParams = (req, res) => {
   // const { appid, version, schemas, idcmd } = req.params;
   // res.json({ appid, version, schemas, idcmd, query: req.query });
   // sele... where id=:params.id
-  const params = makeParam(req);
+  const params = makeParams(req);
   console.log('🚀 ~', params);
   res.json(params);
 };

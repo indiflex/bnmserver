@@ -21,14 +21,15 @@ export const getValue = (obj, accessor) => {
   const pointIdx = accessor.indexOf('.');
   if (pointIdx === -1) return obj ? obj[accessor] : obj;
   const k = accessor.substring(0, pointIdx);
+  // console.log('🚀 ~ k', k);
   return getValue(obj[k], accessor.substring(pointIdx + 1));
 };
 
 // TODO make test!!
-const j1 = { id: 1, bbb: 'str', cc: { dd: 'aa' } };
+// const j1 = { id: 1, bbb: 'str', cc: { dd: 'aa' } };
 // const j2 = { id: 2, ddd: 'str', cc: { ee: 'xx' } };
 // console.log(extendJson(j1, j2));
 // console.log(j1);
 // console.log(j2);
-console.log(getValue(j1, 'xxx.bbbx'));
+// console.log(getValue(j1, 'xxx.bbbx'));
 // console.log(getValue(j1, 'cc.dd'));

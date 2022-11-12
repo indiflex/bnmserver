@@ -2,16 +2,34 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import connRedis from 'connect-redis';
-
 import { extendJson } from './utils.js';
-import { COOKIE_SECRET, SECRET } from '../config.js';
+import { AllowHosts, COOKIE_SECRET, SECRET } from '../config.js';
 
-export const makeParam = (req, otherParams) => {
+export const makeParams = (req, otherParams) => {
   const { body, query, params, headers } = req;
   return extendJson(
     { body, query, params, headers },
     extendJson(body, query, params, otherParams)
   );
+};
+
+export const allowHosts = (req, res, next) => {
+  if (AllowHosts.includes(req.headers.origin))
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+  else res.header('Access-Control-Allow-Origin', AllowHosts[0]);
+
+  res.header('Access-Control-Allow-Credentials', true); //ajax for diff domain
+  // res.header(
+  //   'Access-Control-Allow-Headers',
+  //   'Origin, X-Requested-With, Content-Type, Accept, Authorization, SocketID'
+  // );
+  res.header('Access-Control-Allow-Headers', 'SocketID');
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET, PATCH, PUT, POST, DELETE, OPTIONS'
+  );
+
+  next();
 };
 
 export const setSessionAndCookie = (app, redis) => {

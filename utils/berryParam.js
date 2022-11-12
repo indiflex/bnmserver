@@ -1,5 +1,5 @@
 import { getValue } from './utils.js';
-import { encrypt } from './encryptUtils.js';
+import { encrypt, password } from './encryptUtils.js';
 
 // select * from User where name =: name;
 // params['user'] = { id: 1 };
@@ -33,7 +33,7 @@ export const berryParam = (sql, params) => {
   try {
     console.log(params);
     const paramKeys = sql.match(REG_PARAM);
-    console.log('***************', paramKeys);
+    // console.log('***************', paramKeys);
     const query = sql.replace(REG_PARAM, '?');
     // console.log('***************', query);
     const queryParams = paramKeys.map((pk) => {
@@ -46,11 +46,15 @@ export const berryParam = (sql, params) => {
             return val.split(',');
           case '@enc_':
             return encrypt(val);
+          case '@pwd_':
+            return password(val);
         }
       } else {
+        console.log('🚀 ~ ', k);
         return getValue(params, k);
       }
     });
+    console.log('🚀 ~ queryParams', queryParams);
     return { query, queryParams };
   } catch (error) {
     console.error('EEEEEEE>>', error);

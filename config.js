@@ -11,9 +11,16 @@ export const {
   GOOGLE_APP_USER,
   GOOGLE_APP_PASS,
   EKEY: DefaultSalt,
+  SECRET,
+  REDIS_INFO,
 } = process.env;
 
 export const DbInfo = {};
+
+export const RedisInfo = {
+  legacyMode: true,
+  url: REDIS_INFO,
+};
 
 export const MailInfo = {
   service: 'gmail',

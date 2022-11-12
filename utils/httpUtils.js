@@ -7,3 +7,5 @@ export const makeParam = (req, otherParams) => {
     extendJson(body, query, params, otherParams)
   );
 };
+
+export const setSession = (app, req) => {};

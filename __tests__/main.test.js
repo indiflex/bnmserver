@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
+import { server } from '../bnm';
 import { hello } from '../routes/api';
 
-test('hello', () => {
+test('hello', (done) => {
   const req = {};
   const res = { send: jest.fn() };
   hello(req, res);
@@ -9,4 +10,9 @@ test('hello', () => {
   expect(res.send.mock.calls.length).toBe(1);
   const [[data]] = res.send.mock.calls;
   expect(data).toEqual('Hello World!!');
+  server.on('listening', () => {
+    console.log('🚀 ~ listening', new Date());
+    server.close();
+    done();
+  });
 });

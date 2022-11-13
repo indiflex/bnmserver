@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon bnm.js",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit",
+    "testall": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit --silent",
     "pm2": "pm2 start bnm.js --watch",
     "prettier": "prettier --write .",
     "lint": "eslint ."

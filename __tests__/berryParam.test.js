@@ -1,5 +1,5 @@
 import { berryParam } from '../utils/berryParam';
-import { makeParam } from '../utils/httpUtils';
+import { makeParams } from '../utils/httpUtils';
 
 // const TestQueries = [
 //   'select * from Table where id=:id and name = :user.name',
@@ -16,7 +16,7 @@ describe('berryParam - new version', () => {
   test('simple sql', () => {
     const sql = `select *, 'ab:cd' abcd, {appid} as app from Table where id={id} and name = {user.name} and xx = 'abc:ef' and role in ({@arr_user.roles}) and ssn = {@enc_user.ssn}`;
     //`const { query, queryParams, error, params } = berryParam(sql, request);
-    const { query, queryParams } = berryParam(sql, makeParam(request));
+    const { query, queryParams } = berryParam(sql, makeParams(request));
     expect(query).toBe(
       `select *, 'ab:cd' abcd, ? as app from Table where id=? and name = ? and xx = 'abc:ef' and role in (?) and ssn = ?`
     );

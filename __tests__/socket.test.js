@@ -23,11 +23,15 @@ describe('bnm socket test', () => {
   });
 
   afterAll((done) => {
-    clientSocket.close();
     io.close();
+    clientSocket?.close();
     server.close();
     console.log('🚀 ~ close clientSocket', time());
-    done();
+    server.on('close', () => {
+      console.log('****************** closed');
+      done();
+    });
+    // done();
   });
 
   test('should message', (done) => {

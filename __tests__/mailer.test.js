@@ -1,5 +1,4 @@
-import { jest } from '@jest/globals';
-import request from 'supertest';
+// import request from 'supertest';
 import { RegistEmail } from '../config';
 import { send } from '../utils/mailer';
 
@@ -9,7 +8,7 @@ import { send } from '../utils/mailer';
  */
 
 const onlyMe = '"시코" <indiflex1@gmail.com>';
-const allUser = 'indiflex1@gmail.com, ho2yahh@gmail.com, 213069@naver.com';
+// const allUser = 'indiflex1@gmail.com, ho2yahh@gmail.com, 213069@naver.com';
 
 describe('mailsender', () => {
   test('send mail', async () => {

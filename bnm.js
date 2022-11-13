@@ -29,7 +29,7 @@ app.get('/mysql/:id', (req, res) => {
       params
     );
 
-    console.log('🚀 ~ query', query, queryParams);
+    // console.log('🚀 ~ query', query, queryParams);
     conn.execute(query, queryParams, (err, rows) => {
       console.log(err, rows);
       res.json({ rows });
@@ -63,6 +63,11 @@ const server = app.listen(PORT, () => {
   console.log(`B&M Server listening on port ${PORT}`);
 });
 
+server.on('close', () => {
+  // redis.end();
+  console.log('🚀 ~ server closed', new Date());
+});
+
 const io = new SocketServer(server, {
   cors: {
     origin: AllowHosts,
@@ -78,18 +83,18 @@ const io = new SocketServer(server, {
 // socketMap.set('<roomId>', socket.id);
 
 io.sockets.on('connection', (socket) => {
-  console.log('🚀 ~ real socket started', socket.id);
+  // console.log('🚀 ~ real socket started', socket.id);
   // const { token } = socket.handshake.query;
   const square = 'BnmSquare';
   socket.join(square);
-  console.log(socket.id + ' joined square!');
+  // console.log('🚀 ~ joined square', square, socket.id);
   socket.emit('message', 'Welcome to B&M');
-  console.log('🚀 ~ send welcome message to', socket.id);
+  // console.log('🚀 ~ send welcome message to', socket.id);
 
   socket.on('hello', (data, cb) => {
-    console.log('🚀 ~ receive hello from', socket.id, data);
+    // console.log('🚀 ~ receive hello from', socket.id, data);
     socket.to(square).emit('hello', data);
-    console.log('🚀 ~ send hello to', socket.id);
+    // console.log('🚀 ~ send hello to', socket.id);
     cb('world');
   });
 

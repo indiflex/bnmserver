@@ -17,7 +17,7 @@ const makeQuery = (query) => {
 const makeUrl = ({ appid, version, schemas, idcmd, query }) =>
   `/api/${appid}/${version}/${schemas}/${idcmd}?${makeQuery(query)}`;
 
-describe('makeQyery & makeUrl', () => {
+describe.skip('makeQyery & makeUrl', () => {
   test('makeQuery', () => {
     const pq = {
       appid: 'www',
@@ -45,7 +45,7 @@ describe('makeQyery & makeUrl', () => {
   });
 });
 
-describe.only('api - home & params', () => {
+describe.skip('api - home & params', () => {
   test('home', async () => {
     // const response = await request(app).get('/');
     const response = await request(server).get('/');
@@ -63,6 +63,7 @@ describe.only('api - home & params', () => {
       query: { searchStr: '11' },
     };
     const sampleUrl = makeUrl(expectData);
+    console.log('🚀 ~ sampleUrl', sampleUrl);
     const response = await request(server).get(
       sampleUrl.replace('/api/', '/apiparams/')
     );

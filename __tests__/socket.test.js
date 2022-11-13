@@ -1,48 +1,58 @@
 import Client from 'socket.io-client';
-// import { server, io } from '../bnm.js';
+import { server, io } from '../bnm.js';
 
-describe('my awesome project', () => {
+const stime = new Date().getTime();
+const time = () => new Date().getTime() - stime;
+
+describe('bnm socket test', () => {
   let clientSocket;
 
   beforeAll((done) => {
-    clientSocket = new Client(`http://localhost:4001`);
-    clientSocket.on('connect', () => {
-      clientSocket.on('message', (arg) => {
-        // expect(arg).toBe('BNM');
-        console.log('************message>>', arg);
-      });
-      clientSocket.on('hello', (arg) => {
-        // expect(arg).toBe('BNM');
-        console.log('************hello>>', arg);
-        done();
+    server.on('listening', () => {
+      console.log('🚀 ~ express server listening', time());
+
+      clientSocket = new Client(`http://localhost:4001`);
+      clientSocket.on('connect', () => {
+        clientSocket.on('message', (data) => {
+          expect(data).toBe('Welcome to B&M');
+          console.log('🚀 ~ receive welcome message', data);
+          done();
+        });
       });
     });
   });
 
-  afterAll(() => {
+  afterAll((done) => {
     clientSocket.close();
+    io.close();
+    server.close();
+    console.log('🚀 ~ close clientSocket', time());
+    done();
   });
 
-  // test('should work', (done) => {
-  //   // client 수신 listener
-  //   clientSocket.on('hello', (arg) => {
-  //     expect(arg).toBe('BNM');
-  //     done();
-  //   });
-  // });
-
-  test('should message', () => {
+  test('should message', (done) => {
     // client 수신 listener
+    clientSocket.on('hello', (data) => {
+      console.log('🚀 ~ arg', data);
+      expect(data).toBe('BNM');
+      console.log('🚀 ~ receive hello ~ collaback', data);
+    });
+
     clientSocket.emit('hello', 'BNM', (arg) => {
-      // expect(arg).toBe('world');
-      console.log('************hello>>', arg);
+      expect(arg).toBe('world');
+      console.log('🚀 ~ sent hello ~ callback is', arg);
+      done();
     });
   });
 
-  // test('should work (with ack)', (done) => {
-  //   clientSocket.on('hello', (arg) => {
-  //     // expect(arg).toBe('BNM');
-  //     console.log('************hello>>', arg);
+  // test('should work - ', (done) => {
+  //   clientSocket.on('', (arg) => {
+  //     expect(arg).toBe('');
+  //   });
+
+  //   clientSocket.emit('', data, (arg) => {
+  //     // expect(arg).toBe('world');
+  //     console.log('🚀 ~ send hello ~', arg);
   //     done();
   //   });
   // });

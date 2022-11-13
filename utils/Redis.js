@@ -6,11 +6,17 @@ export class Redis {
   constructor() {
     this.#client = createClient(RedisInfo);
     this.#client.connect().then(() => {
-      console.log('getConnect');
+      this.#client.keys('*', (err, data) => {
+        console.log('🚀 ~ redis all keys is', err, data);
+      });
     });
-    this.#client.on('connect', () => console.log('Redis Connected!'));
-    this.#client.on('disconnect', () => console.log('Redis Disconnected!'));
-    this.#client.on('error', (error) => console.log('Redis Error>>', error));
+    this.#client.on('connect', () =>
+      console.log('🚀 ~ Redis Connected', new Date())
+    );
+    this.#client.on('disconnect', () =>
+      console.log('🚀 ~ Redis Disconnected', new Date())
+    );
+    this.#client.on('error', (error) => console.log('🚀 ~ Redis Error', error));
   }
 
   get(k) {

@@ -2,8 +2,8 @@ import express from 'express';
 
 import ogs from 'open-graph-scraper';
 import { createPool } from 'mysql2';
-import { Server } from 'socket.io';
-import { PORT, DbInfo } from './config.js';
+import { Server as SocketServer } from 'socket.io';
+import { PORT, DbInfo, AllowHosts } from './config.js';
 import { hello, api, apiParams } from './routes/api.js';
 import {
   makeParams,
@@ -18,26 +18,6 @@ const redis = new Redis();
 
 setSessionAndCookie(app, redis);
 app.use(allowHosts);
-
-const sql = {
-  User: {
-    all: 'select * from User',
-    R: 'select * from User where id = {id}',
-    C: {
-      sql: 'insert into User(nickname, email, passwd) values({nickname}, {email}, {@pwd_passwd}',
-      next: () => {},
-    },
-    U: 'update User set nickname={nickname}, email={email}, passwd={@pwd_passwd} where id={id}',
-    D: 'delete from User where id={id}',
-    searchUser: `select * from User where name like concat('%', {searchStr}, '%')`,
-  },
-};
-// ==> user: {nickname: 'sdfdsf}
-// ..../users/1  GET  C
-// ..../users/  GET  all
-// ..../users/1  PATCH  U
-// ..../users/   POST  C ==> next: R (id: lastInsertId)
-// ..../users/1  POST  cmd
 
 const pool = createPool(DbInfo);
 app.get('/mysql/:id', (req, res) => {
@@ -83,9 +63,9 @@ const server = app.listen(PORT, () => {
   console.log(`B&M Server listening on port ${PORT}`);
 });
 
-const io = new Server(server, {
+const io = new SocketServer(server, {
   cors: {
-    origin: [],
+    origin: AllowHosts,
     credentials: true,
   },
 });
@@ -98,15 +78,23 @@ const io = new Server(server, {
 // socketMap.set('<roomId>', socket.id);
 
 io.sockets.on('connection', (socket) => {
-  console.log('socket>>>>>', socket.id);
+  console.log('🚀 ~ real socket started', socket.id);
   // const { token } = socket.handshake.query;
   const square = 'BnmSquare';
   socket.join(square);
+  console.log(socket.id + ' joined square!');
   socket.emit('message', 'Welcome to B&M');
+  console.log('🚀 ~ send welcome message to', socket.id);
+
   socket.on('hello', (data, cb) => {
-    console.log('sssssssssssssssss>>', data);
+    console.log('🚀 ~ receive hello from', socket.id, data);
     socket.to(square).emit('hello', data);
+    console.log('🚀 ~ send hello to', socket.id);
     cb('world');
+  });
+
+  socket.on('disconnecting', (reason) => {
+    console.log('🚀 ~ disconnecting', socket.id, ', reason:', reason);
   });
 });
 

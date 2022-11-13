@@ -5,7 +5,7 @@
   "main": "bnm.js",
   "scripts": {
     "dev": "nodemon bnm.js",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit",
     "pm2": "pm2 start bnm.js --watch",
     "prettier": "prettier --write .",
     "lint": "eslint ."

@@ -2,6 +2,7 @@
 .env.development
 .env.product
 uploads/
+coverage/
 
 # Logs
 logs

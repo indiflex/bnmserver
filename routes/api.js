@@ -1,4 +1,4 @@
-import { Db } from '../utils/Db.js';
+import { Db } from '../utils/db.js';
 import { makeParams } from '../utils/httpUtils.js';
 import * as models from '../models/index.js';
 

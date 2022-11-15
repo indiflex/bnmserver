@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { user } from '../models/user.js';
-import { Db } from './Db.js';
+import { Db } from './db.js';
 
 export const setupLocalStrategy = (app) => {
   passport.use(

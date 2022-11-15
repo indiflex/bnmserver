@@ -1,4 +1,4 @@
-import { Db } from './Db.js';
+import { Db } from './db.js';
 
 /**
  * get the 1 row from schema

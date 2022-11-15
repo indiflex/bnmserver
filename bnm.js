@@ -11,7 +11,7 @@ import {
 } from './utils/httpUtils.js';
 import { Redis } from './utils/Redis.js';
 // import { berryParam } from './utils/berryParam.js';
-import { Db } from './utils/Db.js';
+import { Db } from './utils/db.js';
 import { setupLocalStrategy } from './utils/pass.js';
 
 const app = express();

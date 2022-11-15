@@ -200,19 +200,20 @@ const io = new SocketServer(server, {
 // socketMap.set('<roomId>', socket.id);
 
 io.sockets.on('connection', (socket) => {
-  // // console.log('🚀 ~ real socket started', socket.id);
   // const { token } = socket.handshake.query;
   const square = 'BnmSquare';
   socket.join(square);
-  // // console.log('🚀 ~ joined square', square, socket.id);
-  socket.emit('message', 'Welcome to B&M');
-  // // console.log('🚀 ~ send welcome message to', socket.id);
+  // socket.emit('message', 'Welcome to B&M');
 
   socket.on('hello', (data, cb) => {
-    // // console.log('🚀 ~ receive hello from', socket.id, data);
     socket.to(square).emit('hello', data);
-    // // console.log('🚀 ~ send hello to', socket.id);
     cb('world');
+  });
+
+  socket.on('message', (data, cb) => {
+    console.log('🚀 ~ message', data);
+    socket.to(square).emit('message', data);
+    cb('OK');
   });
 
   socket.on('disconnecting', (reason) => {

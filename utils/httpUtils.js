@@ -36,6 +36,7 @@ export const allowHosts = (req, res, next) => {
 
 export const setSessionAndCookie = (app, client) => {
   app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+  app.use(bodyParser.json({ limit: '1mb' }));
   app.use(
     cookieParser(COOKIE_SECRET, {
       singed: true,

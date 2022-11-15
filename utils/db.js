@@ -20,7 +20,7 @@ export class Db {
   }
 
   async setConn() {
-    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+    // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
     this.#conn = await Db.#pool.getConnection();
     if (this.#withTransaction) this.#conn.beginTransaction();
   }
@@ -29,7 +29,7 @@ export class Db {
     const { query, queryParams } = berryParam(sql, params);
     if (!this.#conn) await this.setConn();
 
-    console.log('🚀 ~ query', query, queryParams);
+    // console.log('🚀 ~ query', query, queryParams);
     const [rows] = QueryRegExp.test(query)
       ? await this.#conn.query(query, queryParams)
       : await this.#conn.execute(query, queryParams);
@@ -43,7 +43,7 @@ export class Db {
   }
 
   release() {
-    console.log('===================================');
+    // console.log('===================================');
     if (!this.#didRollback) this.#conn.commit();
     if (this.#conn) this.#conn.release();
   }

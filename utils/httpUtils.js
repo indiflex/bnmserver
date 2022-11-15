@@ -2,11 +2,13 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import connRedis from 'connect-redis';
+import inflect from 'i';
 import { extendJson } from './utils.js';
 import { AllowHosts, COOKIE_SECRET, SECRET } from '../config.js';
 
 export const makeParams = (req, otherParams) => {
   const { body, query, params, headers } = req;
+  if (req.params.schemas) params.schema = inflect().singularize(params.schemas);
   return extendJson(
     { body, query, params, headers },
     extendJson(body, query, params, otherParams)
@@ -32,7 +34,7 @@ export const allowHosts = (req, res, next) => {
   next();
 };
 
-export const setSessionAndCookie = (app, redis) => {
+export const setSessionAndCookie = (app, client) => {
   app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
   app.use(
     cookieParser(COOKIE_SECRET, {
@@ -51,7 +53,8 @@ export const setSessionAndCookie = (app, redis) => {
       // cookie: {
       //   maxAge: 24 * 60 * 60 * 1000,
       // },
-      store: new RedisStore({ client: redis.getClient() }),
+      store: new RedisStore({ client }),
+      // store: new RedisStore({ client: redis.getClient() }),
     })
   );
 

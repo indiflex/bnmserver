@@ -17,9 +17,9 @@ export const extendJson = (...args) => {
  * @param {string} accessor
  * @return {any} value
  */
-export const getValue = (obj, accessor) => {
+export const getValue = (obj, accessor, defaultValue = null) => {
   const pointIdx = accessor.indexOf('.');
-  if (pointIdx === -1) return obj ? obj[accessor] : obj;
+  if (pointIdx === -1) return (obj ? obj[accessor] : obj) || defaultValue;
   const k = accessor.substring(0, pointIdx);
   // console.log('🚀 ~ k', k);
   return getValue(obj[k], accessor.substring(pointIdx + 1));

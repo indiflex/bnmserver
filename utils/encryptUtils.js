@@ -19,9 +19,23 @@ export const encrypt = (data) => {
 
 export const decrypt = (encryptedData) => {
   const [iv, encData] = encryptedData.split(':');
+  console.log('🚀 ~ iv', iv, encData);
   const decipher = createDecipheriv(ALGORITHM, KEY, Buffer.from(iv, 'hex'));
   const decUpdateBuffer = decipher.update(encData, DIGEST);
   return Buffer.concat([decUpdateBuffer, decipher.final()]).toString();
+};
+
+export const encryptUserToken = (user) => {
+  return encrypt(`${user.id},${user.email}`);
+};
+
+/**
+ * token 복호화
+ * @param {string} token
+ * @returns [userId, userEmail]
+ */
+export const decryptUserToken = (token) => {
+  return decrypt(token)?.split(',');
 };
 
 /**

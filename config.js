@@ -1,13 +1,10 @@
-// require('dotenv').config();
-// module.exports = {
-//   PORT
-// }
-
 import { config } from 'dotenv';
 config();
 
 export const {
   PORT,
+  HOST,
+  MAIL_FROM,
   GOOGLE_APP_USER,
   GOOGLE_APP_PASS,
   EKEY: DefaultSalt,
@@ -28,7 +25,7 @@ export const DbInfo = {
   password: DB_PASS,
   database: 'sbdb',
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 15,
   queueLimit: 0,
 };
 
@@ -48,12 +45,12 @@ export const MailInfo = {
   auth: { user: GOOGLE_APP_USER, pass: GOOGLE_APP_PASS },
 };
 
-export const RegistEmail = (
+export const getRegistEmailContent = (
   userName,
   token,
-  host = 'https://bnm.com'
+  host = HOST
 ) => `<!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
   <meta charset="UTF-8">
@@ -63,11 +60,13 @@ export const RegistEmail = (
 </head>
 
 <body>
-  <h3>${userName}님 반값습니다!</h3>
+  <h3>${userName}님 반가워요!</h3>
   <div>
     가입을 완료하시려면 아래 가입 승인 버튼을 눌러주세요~
   </div>
-  <p><a href="${host}/auth?token=${token}">승인하기</a></p>
+  <p><a href="${host}/api/bnmwww/0.1/users/confirm-reg?token=${encodeURIComponent(
+  token
+)}">가입승인하기</a></p>
 </body>
 
 </html>`;

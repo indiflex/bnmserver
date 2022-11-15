@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon bnm.js",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit",
+    "test-fexit": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit",
     "testall": "node --experimental-vm-modules ./node_modules/.bin/jest --detectOpenHandles --forceExit --silent",
     "pm2": "pm2 start bnm.js --watch",
     "prettier": "prettier --write .",
@@ -26,9 +27,12 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "i": "^0.3.7",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.8.0",
     "open-graph-scraper": "^4.11.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "redis": "^4.5.0",
     "socket.io": "^4.5.3"
   },

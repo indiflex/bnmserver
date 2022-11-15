@@ -30,9 +30,10 @@ const REG_REPLACER = /^{|}$/g;
  */
 
 export const berryParam = (sql, params) => {
+  if (!params) return { query: sql, queryParams: [] };
   try {
-    console.log(params);
-    const paramKeys = sql.match(REG_PARAM);
+    // console.log(params);
+    const paramKeys = sql.match(REG_PARAM) || [];
     // console.log('***************', paramKeys);
     const query = sql.replace(REG_PARAM, '?');
     // console.log('***************', query);
@@ -50,11 +51,11 @@ export const berryParam = (sql, params) => {
             return password(val);
         }
       } else {
-        console.log('🚀 ~ ', k);
+        // console.log('🚀 ~ not @', k, params, getValue(params, k));
         return getValue(params, k);
       }
     });
-    console.log('🚀 ~ queryParams', queryParams);
+    // console.log('🚀 ~ queryParams', queryParams);
     return { query, queryParams };
   } catch (error) {
     console.error('EEEEEEE>>', error);
